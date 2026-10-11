@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<title>Snapchat Sign-in: Chapter 1 Uploader</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.code { font: 15px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; background: #f6f4ef; border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; word-break: break-all; }
+button { font: inherit; font-size: 15px; margin-top: 12px; padding: 8px 18px; border: 0; border-radius: 8px; background: var(--accent); color: #fff; cursor: pointer; }
+.hidden { display: none; }
+</style>
+</head>
+<body>
+<main>
+<header>
+<div class="brand">Chapter <span>1</span></div>
+<nav><a href="index.html">Home</a><a href="privacy.html">Privacy policy</a></nav>
+</header>
+<h1>Snapchat sign-in</h1>
+
+<div id="ok" class="hidden">
+<p>Snapchat has approved access. Copy this one-time code and paste it back into the uploader setup. It expires in a few minutes and works only once.</p>
+<div class="code" id="code"></div>
+<button type="button" id="copy">Copy code</button>
+<p class="muted" id="state"></p>
+</div>
+
+<div id="err" class="hidden">
+<p>Snapchat did not grant access.</p>
+<div class="code" id="error"></div>
+</div>
+
+<div id="none">
+<p>This page receives the one-time code after the Chapter 1 channel owner signs in with Snapchat. There is nothing to do here otherwise.</p>
+</div>
+
+<footer><p class="muted">Chapter 1 &middot; <a href="https://www.youtube.com/@thisischapter1">youtube.com/@thisischapter1</a></p></footer>
+</main>
+<script>
+(function () {
+  var q = new URLSearchParams(location.search);
+  var code = q.get("code"), error = q.get("error"), state = q.get("state");
+  function show(id) { document.getElementById("none").className = "hidden"; document.getElementById(id).className = ""; }
+  if (code) {
+    show("ok");
+    document.getElementById("code").textContent = code;
+    if (state) document.getElementById("state").textContent = "State: " + state;
+    document.getElementById("copy").onclick = function () {
+      var b = this;
+      navigator.clipboard.writeText(code).then(function () { b.textContent = "Copied"; });
+    };
+  } else if (error) {
+    show("err");
+    document.getElementById("error").textContent = error + (q.get("error_description") ? ": " + q.get("error_description") : "");
+  }
+})();
+</script>
+</body>
+</html>
